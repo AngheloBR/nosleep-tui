@@ -4,62 +4,92 @@
 
 **Keep your Linux laptop awake. Cleanly.**
 
-A tiny Rust CLI that holds a `systemd-logind` inhibitor lock for as long as you need,
-and can optionally keep the screen on and ignore the lid switch.
+A terminal app that holds a `systemd-logind` sleep lock for as long as you need, keeps the
+screen on and ignores the lid if you ask it to, and puts everything back when it's done.
 
 [Español](README.es.md) · English
 
-![nosleep holding a 1h30m lock](docs/demo.svg)
+![nosleep TUI holding a 2-hour lock](docs/tui-active.svg)
 
 </div>
 
-## Why
+## Highlights
 
-`systemd-inhibit sleep 3600` works, but it doesn't show a countdown, it doesn't keep an X11
-screen from blanking, and it can't put your display settings back if something goes wrong.
-`nosleep` does all three:
-
-- **logind inhibitor, held through a file descriptor.** When the process ends, even by
-  `SIGKILL`, the kernel closes the fd and logind releases the lock. Nothing is left behind.
-- **Screen stays on (`--screen`).** Turns off the X11 screensaver and DPMS through `xset`,
-  and puts your exact previous values back when it exits.
-- **Crash-safe restore.** Your original `xset` settings are written to disk *before* anything
-  is changed. If the process is killed hard, `nosleep --restore` puts them back.
-- **Tied to a command (`--while`).** Stays awake only while a build, backup or download runs,
-  and passes on that command's exit code.
+- **Interactive TUI.** Big countdown, progress bar, one-key presets, live toggles and a live
+  view of every inhibitor on the system. Run `nosleep` and you're in.
+- **Scriptable CLI.** `nosleep -t 2h`, `nosleep --while cargo build`, `nosleep --list`.
+- **Can't leak a lock.** The logind lock lives in a file descriptor: if the process dies, even
+  by `SIGKILL`, the kernel closes it and logind lets go.
+- **Screen stays on (X11).** Turns off the screensaver and DPMS by speaking the X11 protocol
+  directly, then puts your exact previous settings back. No `xset` needed.
+- **Crash-safe restore.** Screen settings are saved to disk *before* anything changes; after a
+  hard kill, `nosleep --restore` puts them back.
+- **One static binary.** No Python, no `libdbus`, no `libX11`, no runtime dependencies.
 
 ## Install
 
-Requires Linux with **systemd-logind** and **Rust 1.88+**.
-`--screen` also needs an **X11** session and `xset` (`sudo dnf install xset` / `sudo apt install x11-xserver-utils`).
+### Prebuilt binary (recommended)
+
+Download one file. No Rust and no extra packages needed:
+
+```sh
+curl -fsSL https://github.com/AngheloBR/nosleep-tui/releases/latest/download/nosleep-x86_64-unknown-linux-musl.tar.gz \
+  | tar xz --strip-components=1 -C ~/.local/bin nosleep-x86_64-unknown-linux-musl/nosleep
+```
+
+On ARM (Raspberry Pi, ARM laptops) use `aarch64-unknown-linux-musl` instead.
+Every release also ships a `.sha256` checksum.
+
+### From source
+
+Requires Rust 1.88+.
 
 ```sh
 cargo install --git https://github.com/AngheloBR/nosleep-tui
 ```
 
-Or from a clone:
+### Requirements
+
+- Linux with **systemd-logind** (Fedora, Ubuntu, Arch, Debian and most others).
+- `--screen` / "keep screen on" also needs an **X11** session.
+
+## The TUI
+
+Run `nosleep` with no arguments.
+
+![Custom duration with a live preview](docs/tui-custom.svg)
+
+| Key              | Action                                   |
+| ---------------- | ---------------------------------------- |
+| `Enter` / `s`    | start, or restart the countdown          |
+| `x`              | stop and restore everything              |
+| `+` / `-`        | add or remove 5 minutes                  |
+| `1` … `7`        | 10m · 30m · 1h · 2h · 4h · 8h · ∞        |
+| `c`              | custom duration, with a live preview     |
+| `p`              | keep the screen on (X11)                 |
+| `t`              | ignore the lid switch                    |
+| `r`              | change the reason shown to logind        |
+| `?`              | help                                     |
+| `q`              | quit (asks first if a lock is active)    |
+
+Changing options while the lock is active applies them right away. The new lock is taken
+*before* the old one is released, so the laptop is never left unprotected in between.
+
+To open the TUI with some values already set: `nosleep --tui -t 4h --screen`.
+
+## The CLI
+
+Any flag runs `nosleep` as a plain command, which is handy in scripts:
 
 ```sh
-git clone https://github.com/AngheloBR/nosleep-tui
-cd nosleep-tui
-cargo install --path .
-```
-
-## Usage
-
-```sh
-nosleep                         # block sleep for 1 hour (default)
-nosleep -t 1h30m                # custom duration
-nosleep -t inf                  # until you press Ctrl+C
-nosleep -t 8h --screen --lid    # screen on, closing the lid doesn't suspend
-nosleep --while cargo build --release   # only while the command runs
-nosleep --list                  # show every active inhibitor on the system
+nosleep -t 1h30m                # block sleep for 1h30m, Ctrl+C to stop early
+nosleep -t inf --screen --lid   # until Ctrl+C, screen on, lid ignored
+nosleep --while cargo build --release   # only while the command runs; keeps its exit code
+nosleep --list                  # every active inhibitor on the system
 nosleep --restore               # repair screen settings after a hard kill
 ```
 
-Press **Ctrl+C** at any time: the lock is released and your screen settings are restored.
-
-![nosleep --list output](docs/list.svg)
+![nosleep in CLI mode](docs/demo.svg)
 
 ### Durations
 
@@ -81,6 +111,7 @@ Press **Ctrl+C** at any time: the lock is released and your screen settings are 
 | `--lid`           | Also inhibit `handle-lid-switch`                         |
 | `--reason TEXT`   | Reason shown to logind and in `--list`                   |
 | `--while CMD...`  | Hold the lock only while `CMD` runs                      |
+| `--tui`           | Open the TUI using the flags above as starting values    |
 | `--restore`       | Restore screen settings left behind by a hard kill       |
 | `--list`          | List active inhibitors                                   |
 
@@ -90,27 +121,30 @@ Press **Ctrl+C** at any time: the lock is released and your screen settings are 
 nosleep ──D-Bus──▶ org.freedesktop.login1.Manager.Inhibit("idle:sleep[:handle-lid-switch]", …, "block")
                      └─▶ returns a file descriptor; the lock lasts while that fd is open
 
---screen:  xset q ──▶ $XDG_RUNTIME_DIR/nosleep/xset.json   (1. save)
-           xset s off · s noblank · -dpms                 (2. change)
-           on exit (Drop): restore the saved values and delete the file
+screen:  read screensaver + DPMS ──▶ $XDG_RUNTIME_DIR/nosleep/screen.json   (1. save)
+         screensaver off · no blanking · DPMS off  (X11 protocol, x11rb)    (2. change)
+         on exit: restore the saved values and delete the file
 ```
 
-Locks are released in reverse order (screen first, then the inhibitor), and the release
-works on normal exit, `Ctrl+C`, `SIGTERM`, `SIGHUP` and panics.
+Locks are released in reverse order (screen first, then the inhibitor). That happens on normal
+exit, `q`, `Ctrl+C`, `SIGTERM`, `SIGHUP` and panics.
 
 ## Limitations
 
-- `--screen` only works on **X11**. Under Wayland it refuses to run instead of failing
-  silently. The sleep inhibitor works on any session.
-- Closing the lid while `--lid` is not set will still suspend if your logind config says so.
+- Keeping the screen on only works on **X11**. Under Wayland it refuses instead of failing
+  silently. The sleep lock itself works on any session.
+- Without `--lid` / `t`, closing the lid still suspends if your logind config says so.
 
 ## Development
 
 ```sh
 cargo test
 cargo clippy --all-targets
+cargo test snapshots -- --ignored   # regenerate the TUI screenshots in docs/
 ```
+
+The screenshots are produced by the TUI's own drawing code, so they always match the app.
 
 ## License
 
-Dual-licensed under **MIT OR Apache-2.0**, at your option.
+Dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option.
