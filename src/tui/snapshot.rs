@@ -195,6 +195,13 @@ fn snapshots() {
     let buf = render(&app, &active, 92, 28);
     std::fs::write(format!("{docs}/tui-active.svg"), to_svg(&buf, "nosleep")).unwrap();
 
+    // Vistas previas en otros tamaños (no se versionan: van a target/).
+    let target = concat!(env!("CARGO_MANIFEST_DIR"), "/target");
+    for (w, h) in [(210, 48), (80, 24)] {
+        let buf = render(&app, &active, w, h);
+        std::fs::write(format!("{target}/tui-{w}x{h}.svg"), to_svg(&buf, "nosleep")).unwrap();
+    }
+
     let mut idle = demo_app();
     idle.opts.screen = false;
     idle.opts.lid = false;

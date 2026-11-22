@@ -48,18 +48,18 @@
 <rect x="420.2" y="116.0" width="9.0" height="19.4" fill="#a78bfa"/>
 <rect x="428.8" y="116.0" width="9.0" height="19.4" fill="#a78bfa"/>
 <rect x="437.4" y="116.0" width="9.0" height="19.4" fill="#a78bfa"/>
-<rect x="523.4" y="116.0" width="9.0" height="19" fill="#34d399"/>
-<rect x="532.0" y="116.0" width="9.0" height="19" fill="#34d399"/>
-<rect x="540.6" y="116.0" width="9.0" height="19" fill="#34d399"/>
-<rect x="549.2" y="116.0" width="9.0" height="19" fill="#34d399"/>
-<rect x="557.8" y="116.0" width="9.0" height="19" fill="#34d399"/>
-<rect x="566.4" y="116.0" width="9.0" height="19" fill="#34d399"/>
 <rect x="575.0" y="116.0" width="9.0" height="19" fill="#34d399"/>
 <rect x="583.6" y="116.0" width="9.0" height="19" fill="#34d399"/>
 <rect x="592.2" y="116.0" width="9.0" height="19" fill="#34d399"/>
 <rect x="600.8" y="116.0" width="9.0" height="19" fill="#34d399"/>
+<rect x="609.4" y="116.0" width="9.0" height="19" fill="#34d399"/>
+<rect x="618.0" y="116.0" width="9.0" height="19" fill="#34d399"/>
+<rect x="626.6" y="116.0" width="9.0" height="19" fill="#34d399"/>
+<rect x="635.2" y="116.0" width="9.0" height="19" fill="#34d399"/>
+<rect x="643.8" y="116.0" width="9.0" height="19" fill="#34d399"/>
+<rect x="652.4" y="116.0" width="9.0" height="19" fill="#34d399"/>
 <text x="16.0" y="130.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="523.4" y="130.1" fill="#0f172a" font-weight="700" textLength="86.0" lengthAdjust="spacingAndGlyphs"> ● ACTIVO </text>
+<text x="575.0" y="130.1" fill="#0f172a" font-weight="700" textLength="86.0" lengthAdjust="spacingAndGlyphs"> ● ACTIVO </text>
 <text x="798.6" y="130.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <rect x="41.8" y="135.0" width="9.0" height="19.4" fill="#869df7"/>
 <rect x="50.4" y="135.0" width="9.0" height="19.4" fill="#869df7"/>
@@ -110,8 +110,8 @@
 <rect x="428.8" y="154.0" width="9.0" height="19.4" fill="#65aff4"/>
 <rect x="437.4" y="154.0" width="9.0" height="19.4" fill="#65aff4"/>
 <text x="16.0" y="168.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="523.4" y="168.1" fill="#64748b" textLength="68.8" lengthAdjust="spacingAndGlyphs">vence   </text>
-<text x="592.2" y="168.1" fill="#e2e8f0" font-weight="700" textLength="43.0" lengthAdjust="spacingAndGlyphs">12:41</text>
+<text x="575.0" y="168.1" fill="#64748b" textLength="68.8" lengthAdjust="spacingAndGlyphs">vence   </text>
+<text x="643.8" y="168.1" fill="#e2e8f0" font-weight="700" textLength="43.0" lengthAdjust="spacingAndGlyphs">12:54</text>
 <text x="798.6" y="168.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <rect x="41.8" y="173.0" width="9.0" height="19.4" fill="#43c1f1"/>
 <rect x="50.4" y="173.0" width="9.0" height="19.4" fill="#43c1f1"/>
@@ -132,9 +132,9 @@
 <rect x="428.8" y="173.0" width="9.0" height="19.4" fill="#43c1f1"/>
 <rect x="437.4" y="173.0" width="9.0" height="19.4" fill="#43c1f1"/>
 <text x="16.0" y="187.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="523.4" y="187.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">pantalla </text>
-<text x="600.8" y="187.1" fill="#34d399" textLength="17.2" lengthAdjust="spacingAndGlyphs">● </text>
-<text x="618.0" y="187.1" fill="#e2e8f0" textLength="146.2" lengthAdjust="spacingAndGlyphs">siempre encendida</text>
+<text x="575.0" y="187.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">pantalla </text>
+<text x="652.4" y="187.1" fill="#34d399" textLength="17.2" lengthAdjust="spacingAndGlyphs">● </text>
+<text x="669.6" y="187.1" fill="#e2e8f0" textLength="77.4" lengthAdjust="spacingAndGlyphs">encendida</text>
 <text x="798.6" y="187.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <rect x="41.8" y="192.0" width="9.0" height="19.4" fill="#22d3ee"/>
 <rect x="50.4" y="192.0" width="9.0" height="19.4" fill="#22d3ee"/>
@@ -165,9 +165,9 @@
 <rect x="428.8" y="192.0" width="9.0" height="19.4" fill="#22d3ee"/>
 <rect x="437.4" y="192.0" width="9.0" height="19.4" fill="#22d3ee"/>
 <text x="16.0" y="206.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="523.4" y="206.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">tapa     </text>
-<text x="600.8" y="206.1" fill="#34d399" textLength="17.2" lengthAdjust="spacingAndGlyphs">● </text>
-<text x="618.0" y="206.1" fill="#e2e8f0" textLength="68.8" lengthAdjust="spacingAndGlyphs">ignorada</text>
+<text x="575.0" y="206.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">tapa     </text>
+<text x="652.4" y="206.1" fill="#34d399" textLength="17.2" lengthAdjust="spacingAndGlyphs">● </text>
+<text x="669.6" y="206.1" fill="#e2e8f0" textLength="68.8" lengthAdjust="spacingAndGlyphs">ignorada</text>
 <text x="798.6" y="206.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="16.0" y="225.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="798.6" y="225.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
@@ -296,7 +296,7 @@
 <text x="59.0" y="472.1" fill="#72a8f5" font-weight="700" textLength="60.2" lengthAdjust="spacingAndGlyphs">nosleep</text>
 <text x="196.6" y="472.1" fill="#e2e8f0" textLength="240.8" lengthAdjust="spacingAndGlyphs">idle:sleep:handle-lid-switch</text>
 <text x="454.6" y="472.1" fill="#fbbf24" textLength="43.0" lengthAdjust="spacingAndGlyphs">block</text>
-<text x="514.8" y="472.1" fill="#64748b" textLength="51.6" lengthAdjust="spacingAndGlyphs">193165</text>
+<text x="514.8" y="472.1" fill="#64748b" textLength="51.6" lengthAdjust="spacingAndGlyphs">218978</text>
 <text x="592.2" y="472.1" fill="#e2e8f0" textLength="197.8" lengthAdjust="spacingAndGlyphs">Sesión de trabajo activ</text>
 <text x="798.6" y="472.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="16.0" y="491.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>

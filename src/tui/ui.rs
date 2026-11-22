@@ -10,7 +10,7 @@ use ratatui::{
 
 use super::{
     app::{App, Choice, InputKind, Level, Modal, PRESETS, Status},
-    digits,
+    digits::{self, Scale},
     theme::{
         BORDER, DARK, DIM, ERR, FAINT, KEY_BG, MUTED, OK, OK_DIM, TEXT, WARN, accent, bold, fg,
         pill,
@@ -20,7 +20,10 @@ use crate::time;
 
 pub const MIN_W: u16 = 64;
 pub const MIN_H: u16 = 20;
-const MAX_W: u16 = 104;
+const MAX_W: u16 = 160;
+/// Desde aquí el reloj se dibuja al doble de tamaño.
+const BIG_W: u16 = 136;
+const BIG_H: u16 = 36;
 
 pub fn draw(f: &mut Frame, app: &App, st: &Status) {
     let full = f.area();
@@ -32,24 +35,27 @@ pub fn draw(f: &mut Frame, app: &App, st: &Status) {
     let w = full.width.min(MAX_W);
     let area = Rect::new(full.x + (full.width - w) / 2, full.y, w, full.height);
 
-    let inhib_h = u16::try_from(app.inhibitors.len().max(1))
-        .unwrap_or(8)
-        .min(8)
-        + 3;
-    let hero_h = if area.height >= 24 { 10 } else { 7 };
-    let [header, _, hero, mid, inh, _, footer] = Layout::vertical([
+    let big = area.width >= BIG_W && area.height >= BIG_H;
+    let hero_h = if big {
+        16
+    } else if area.height >= 24 {
+        10
+    } else {
+        7
+    };
+    // Los inhibidores se estiran hasta el pie: la TUI ocupa toda la pantalla.
+    let [header, _, hero, mid, inh, footer] = Layout::vertical([
         Constraint::Length(1),
         Constraint::Length(u16::from(area.height >= 26)),
         Constraint::Length(hero_h),
         Constraint::Length(7),
-        Constraint::Length(inhib_h),
         Constraint::Fill(1),
         Constraint::Length(1),
     ])
     .areas(area);
 
     draw_header(f, header, app, st);
-    draw_hero(f, hero, app, st);
+    draw_hero(f, hero, app, st, big);
     let [left, right] =
         Layout::horizontal([Constraint::Percentage(54), Constraint::Percentage(46)]).areas(mid);
     draw_duration(f, left, app, st);
@@ -174,7 +180,7 @@ fn draw_header(f: &mut Frame, area: Rect, app: &App, st: &Status) {
     }
 }
 
-fn draw_hero(f: &mut Frame, area: Rect, app: &App, st: &Status) {
+fn draw_hero(f: &mut Frame, area: Rect, app: &App, st: &Status, big: bool) {
     let block = panel("ahora", st.active);
     let inner = block.inner(area).inner(Margin::new(2, 0));
     f.render_widget(block, area);
@@ -190,21 +196,28 @@ fn draw_hero(f: &mut Frame, area: Rect, app: &App, st: &Status) {
     let info = info_lines(app, st);
 
     if inner.height >= 8 {
+        let want = if big { Scale::BIG } else { Scale::WIDE };
+        let rows_h = u16::try_from(want.rows()).unwrap_or(5);
         let [_, top, _, bar] = Layout::vertical([
             Constraint::Length(1),
-            Constraint::Length(5),
-            Constraint::Length(1),
+            Constraint::Length(rows_h),
+            Constraint::Fill(1),
             Constraint::Length(1),
         ])
         .areas(inner);
         let [dig, _, side] = Layout::horizontal([
             Constraint::Fill(1),
             Constraint::Length(2),
-            Constraint::Length(30),
+            Constraint::Length(24),
         ])
         .areas(top);
-        let wide = digits::width(&clock, true) <= usize::from(dig.width);
-        let rows = digits::render(&clock, wide);
+        // La escala más grande que quepa (horas de 3+ dígitos ocupan más).
+        let scale = [want, Scale::WIDE, Scale::SMALL]
+            .into_iter()
+            .find(|s| digits::width(&clock, *s) <= usize::from(dig.width))
+            .unwrap_or(Scale::SMALL);
+        let rows = digits::render(&clock, scale);
+        let last = rows.len().saturating_sub(1).max(1) as f64;
         let lines: Vec<Line> = rows
             .into_iter()
             .enumerate()
@@ -214,11 +227,14 @@ fn draw_hero(f: &mut Frame, area: Rect, app: &App, st: &Status) {
                 } else if urgent {
                     WARN
                 } else {
-                    accent(i as f64 / 4.0)
+                    accent(i as f64 / last)
                 };
                 Line::styled(r, fg(c))
             })
             .collect();
+        // La columna de estado se centra verticalmente junto al reloj.
+        let pad = top.height.saturating_sub(5) / 2;
+        let side = Rect::new(side.x, side.y + pad, side.width, side.height - pad);
         f.render_widget(Paragraph::new(lines), dig);
         f.render_widget(Paragraph::new(info), side);
         draw_bar(f, bar, app, st);
@@ -261,13 +277,13 @@ fn info_lines(app: &App, st: &Status) -> Vec<Line<'static>> {
         ]),
         (true, None, _) => Line::from(vec![
             Span::styled("sin límite", bold(TEXT)),
-            Span::styled(" · transcurrido", fg(DIM)),
+            Span::styled(" · en curso", fg(DIM)),
         ]),
         (false, _, Some(d)) => Line::from(vec![
             Span::styled("vencería ", fg(DIM)),
             Span::styled(clock_at(d).unwrap_or_default(), fg(MUTED)),
         ]),
-        (false, _, None) => Line::styled("sin límite · hasta detener", fg(DIM)),
+        (false, _, None) => Line::styled("sin límite", fg(DIM)),
     };
     let flag = |label: &'static str, on: bool, yes: &'static str, no: &'static str| {
         Line::from(vec![
@@ -288,7 +304,7 @@ fn info_lines(app: &App, st: &Status) -> Vec<Line<'static>> {
         status,
         Line::default(),
         when,
-        flag("pantalla ", screen_on, "siempre encendida", "normal"),
+        flag("pantalla ", screen_on, "encendida", "normal"),
         flag("tapa     ", app.opts.lid, "ignorada", "suspende"),
     ]
 }
@@ -373,7 +389,10 @@ fn draw_duration(f: &mut Frame, area: Rect, app: &App, st: &Status) {
     let custom = match app.choice {
         Choice::Custom(d) => Line::from(vec![
             Span::styled(" ✦ ", fg(accent(0.35))),
-            Span::styled(time::fmt_short(Some(d)), pill(DARK, accent(0.35))),
+            Span::styled(
+                format!(" {} ", time::fmt_short(Some(d))),
+                pill(DARK, accent(0.35)),
+            ),
             Span::styled("  personalizado", fg(DIM)),
         ]),
         Choice::Preset(_) => Line::from(vec![

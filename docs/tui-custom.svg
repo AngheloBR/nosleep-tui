@@ -53,12 +53,6 @@
 <rect x="420.2" y="116.0" width="9.0" height="19.4" fill="#475569"/>
 <rect x="428.8" y="116.0" width="9.0" height="19.4" fill="#475569"/>
 <rect x="437.4" y="116.0" width="9.0" height="19.4" fill="#475569"/>
-<rect x="523.4" y="116.0" width="9.0" height="19" fill="#1e293b"/>
-<rect x="532.0" y="116.0" width="9.0" height="19" fill="#1e293b"/>
-<rect x="540.6" y="116.0" width="9.0" height="19" fill="#1e293b"/>
-<rect x="549.2" y="116.0" width="9.0" height="19" fill="#1e293b"/>
-<rect x="557.8" y="116.0" width="9.0" height="19" fill="#1e293b"/>
-<rect x="566.4" y="116.0" width="9.0" height="19" fill="#1e293b"/>
 <rect x="575.0" y="116.0" width="9.0" height="19" fill="#1e293b"/>
 <rect x="583.6" y="116.0" width="9.0" height="19" fill="#1e293b"/>
 <rect x="592.2" y="116.0" width="9.0" height="19" fill="#1e293b"/>
@@ -66,8 +60,14 @@
 <rect x="609.4" y="116.0" width="9.0" height="19" fill="#1e293b"/>
 <rect x="618.0" y="116.0" width="9.0" height="19" fill="#1e293b"/>
 <rect x="626.6" y="116.0" width="9.0" height="19" fill="#1e293b"/>
+<rect x="635.2" y="116.0" width="9.0" height="19" fill="#1e293b"/>
+<rect x="643.8" y="116.0" width="9.0" height="19" fill="#1e293b"/>
+<rect x="652.4" y="116.0" width="9.0" height="19" fill="#1e293b"/>
+<rect x="661.0" y="116.0" width="9.0" height="19" fill="#1e293b"/>
+<rect x="669.6" y="116.0" width="9.0" height="19" fill="#1e293b"/>
+<rect x="678.2" y="116.0" width="9.0" height="19" fill="#1e293b"/>
 <text x="16.0" y="130.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="523.4" y="130.1" fill="#94a3b8" font-weight="700" textLength="111.8" lengthAdjust="spacingAndGlyphs"> ○ EN ESPERA </text>
+<text x="575.0" y="130.1" fill="#94a3b8" font-weight="700" textLength="111.8" lengthAdjust="spacingAndGlyphs"> ○ EN ESPERA </text>
 <text x="798.6" y="130.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <rect x="41.8" y="135.0" width="9.0" height="19.4" fill="#475569"/>
 <rect x="50.4" y="135.0" width="9.0" height="19.4" fill="#475569"/>
@@ -122,8 +122,8 @@
 <rect x="428.8" y="154.0" width="9.0" height="19.4" fill="#475569"/>
 <rect x="437.4" y="154.0" width="9.0" height="19.4" fill="#475569"/>
 <text x="16.0" y="168.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="523.4" y="168.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">vencería </text>
-<text x="600.8" y="168.1" fill="#94a3b8" textLength="43.0" lengthAdjust="spacingAndGlyphs">12:28</text>
+<text x="575.0" y="168.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">vencería </text>
+<text x="652.4" y="168.1" fill="#94a3b8" textLength="43.0" lengthAdjust="spacingAndGlyphs">12:42</text>
 <text x="798.6" y="168.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <rect x="41.8" y="173.0" width="9.0" height="19.4" fill="#475569"/>
 <rect x="50.4" y="173.0" width="9.0" height="19.4" fill="#475569"/>
@@ -152,9 +152,9 @@
 <rect x="428.8" y="173.0" width="9.0" height="19.4" fill="#475569"/>
 <rect x="437.4" y="173.0" width="9.0" height="19.4" fill="#475569"/>
 <text x="16.0" y="187.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="523.4" y="187.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">pantalla </text>
-<text x="600.8" y="187.1" fill="#334155" textLength="17.2" lengthAdjust="spacingAndGlyphs">○ </text>
-<text x="618.0" y="187.1" fill="#94a3b8" textLength="51.6" lengthAdjust="spacingAndGlyphs">normal</text>
+<text x="575.0" y="187.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">pantalla </text>
+<text x="652.4" y="187.1" fill="#334155" textLength="17.2" lengthAdjust="spacingAndGlyphs">○ </text>
+<text x="669.6" y="187.1" fill="#94a3b8" textLength="51.6" lengthAdjust="spacingAndGlyphs">normal</text>
 <text x="798.6" y="187.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <rect x="41.8" y="192.0" width="9.0" height="19.4" fill="#475569"/>
 <rect x="50.4" y="192.0" width="9.0" height="19.4" fill="#475569"/>
@@ -193,9 +193,9 @@
 <rect x="428.8" y="192.0" width="9.0" height="19.4" fill="#475569"/>
 <rect x="437.4" y="192.0" width="9.0" height="19.4" fill="#475569"/>
 <text x="16.0" y="206.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="523.4" y="206.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">tapa     </text>
-<text x="600.8" y="206.1" fill="#334155" textLength="17.2" lengthAdjust="spacingAndGlyphs">○ </text>
-<text x="618.0" y="206.1" fill="#94a3b8" textLength="68.8" lengthAdjust="spacingAndGlyphs">suspende</text>
+<text x="575.0" y="206.1" fill="#64748b" textLength="77.4" lengthAdjust="spacingAndGlyphs">tapa     </text>
+<text x="652.4" y="206.1" fill="#334155" textLength="17.2" lengthAdjust="spacingAndGlyphs">○ </text>
+<text x="669.6" y="206.1" fill="#94a3b8" textLength="68.8" lengthAdjust="spacingAndGlyphs">suspende</text>
 <text x="798.6" y="206.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="16.0" y="225.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="798.6" y="225.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
@@ -228,7 +228,7 @@
 <text x="170.8" y="301.1" fill="#8c99f8" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="213.8" y="301.1" fill="#34d399" textLength="17.2" lengthAdjust="spacingAndGlyphs">✓ </text>
 <text x="231.0" y="301.1" fill="#e2e8f0" font-weight="700" textLength="51.6" lengthAdjust="spacingAndGlyphs">1h 30m</text>
-<text x="282.6" y="301.1" fill="#64748b" textLength="146.2" lengthAdjust="spacingAndGlyphs"> · vencería 12:58</text>
+<text x="282.6" y="301.1" fill="#64748b" textLength="146.2" lengthAdjust="spacingAndGlyphs"> · vencería 13:12</text>
 <text x="643.8" y="301.1" fill="#8c99f8" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="798.6" y="301.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <rect x="127.8" y="306.0" width="9.0" height="19" fill="#78a4f6"/>
@@ -323,7 +323,9 @@
 <text x="317.0" y="510.1" fill="#64748b" textLength="34.4" lengthAdjust="spacingAndGlyphs">1933</text>
 <text x="394.4" y="510.1" fill="#94a3b8" textLength="146.2" lengthAdjust="spacingAndGlyphs">Lock screen first</text>
 <text x="798.6" y="510.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
-<text x="16.0" y="529.1" fill="#334155" textLength="791.2" lengthAdjust="spacingAndGlyphs">╰──────────────────────────────────────────────────────────────────────────────────────────╯</text>
+<text x="16.0" y="529.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="798.6" y="529.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="16.0" y="548.1" fill="#334155" textLength="791.2" lengthAdjust="spacingAndGlyphs">╰──────────────────────────────────────────────────────────────────────────────────────────╯</text>
 <rect x="24.6" y="553.0" width="9.0" height="19" fill="#1e293b"/>
 <rect x="33.2" y="553.0" width="9.0" height="19" fill="#1e293b"/>
 <rect x="41.8" y="553.0" width="9.0" height="19" fill="#1e293b"/>
