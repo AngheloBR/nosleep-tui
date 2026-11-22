@@ -4,10 +4,9 @@ use std::{
 };
 
 use ratatui::crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
-use zbus::blocking::Connection;
 
 use crate::{
-    guard::inhibit::{self, InhibitorRow},
+    guard::inhibit::{self, Connection, InhibitorRow},
     session::{Options, Session},
     time,
 };
@@ -147,7 +146,7 @@ impl App {
 
     fn poll_inhibitors(&mut self) {
         if self.bus.is_none() {
-            match Connection::system() {
+            match inhibit::connect() {
                 Ok(c) => self.bus = Some(c),
                 Err(e) => {
                     if !self.bus_failed {
