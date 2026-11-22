@@ -1,0 +1,49 @@
+name: Release
+
+# Publica binarios estáticos (musl) al empujar un tag `v*`, p. ej. `git tag v0.1.0 && git push --tags`.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - x86_64-unknown-linux-musl
+          - aarch64-unknown-linux-musl
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: houseabsolute/actions-rust-cross@v1
+        with:
+          command: build
+          target: ${{ matrix.target }}
+          args: --locked --release
+      - name: Empaquetar
+        run: |
+          name=nosleep-${{ matrix.target }}
+          mkdir "$name"
+          cp target/${{ matrix.target }}/release/nosleep README.md README.es.md LICENSE-MIT LICENSE-APACHE "$name"/
+          tar czf "$name.tar.gz" "$name"
+          sha256sum "$name.tar.gz" > "$name.tar.gz.sha256"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.target }}
+          path: nosleep-*.tar.gz*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: nosleep-*.tar.gz*
+          generate_release_notes: true
