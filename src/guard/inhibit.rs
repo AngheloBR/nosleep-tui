@@ -34,6 +34,10 @@ impl Inhibitor {
 }
 
 pub fn list() -> color_eyre::Result<Vec<InhibitorRow>> {
-    let conn = Connection::system()?;
-    Ok(LoginManagerProxyBlocking::new(&conn)?.list_inhibitors()?)
+    list_on(&Connection::system()?)
+}
+
+/// Igual que [`list`] pero reutiliza una conexión (la TUI consulta cada pocos segundos).
+pub fn list_on(conn: &Connection) -> color_eyre::Result<Vec<InhibitorRow>> {
+    Ok(LoginManagerProxyBlocking::new(conn)?.list_inhibitors()?)
 }

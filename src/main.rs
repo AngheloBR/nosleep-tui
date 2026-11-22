@@ -1,9 +1,11 @@
 mod cli;
 mod guard;
+mod session;
 mod time;
+mod tui;
 
 use std::{
-    io::Write,
+    io::{IsTerminal, Write},
     process::{Command, ExitCode},
     sync::{
         Arc,
@@ -21,6 +23,18 @@ const TICK: Duration = Duration::from_millis(200);
 fn main() -> color_eyre::Result<ExitCode> {
     color_eyre::install()?;
     let cli = Cli::parse();
+
+    let bare = std::env::args_os().len() == 1;
+    let interactive = std::io::stdin().is_terminal() && std::io::stdout().is_terminal();
+    if cli.tui || (bare && interactive) {
+        let initial = cli.time.as_deref().map(time::parse_duration).transpose()?;
+        let opts = session::Options {
+            screen: cli.screen,
+            lid: cli.lid,
+            reason: cli.reason,
+        };
+        return tui::run(opts, initial);
+    }
 
     if cli.restore {
         let did = guard::screen::restore_leftover()?;

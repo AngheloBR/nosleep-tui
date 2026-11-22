@@ -1,89 +1,122 @@
-use color_eyre::eyre::{WrapErr, bail, eyre};
+//! Pantalla encendida en X11 hablando el protocolo directamente (x11rb, Rust puro):
+//! sin depender de `xset` ni de libX11.
+
+use color_eyre::eyre::{WrapErr, bail};
 use serde::{Deserialize, Serialize};
 use std::{
     fs,
     io::{ErrorKind, Write},
     path::PathBuf,
-    process::Command,
+};
+use x11rb::{
+    connection::RequestConnection,
+    protocol::{
+        dpms::ConnectionExt as _,
+        xproto::{Blanking, ConnectionExt as _, Exposures},
+    },
+    rust_connection::RustConnection,
 };
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct XsetState {
-    pub timeout: u32,
-    pub cycle: u32,
-    pub blank: bool,
-    pub dpms: bool,
-    pub standby: u32,
-    pub suspend: u32,
-    pub off: u32,
+/// Lo que `xset q` mostraría en "Screen Saver" y "DPMS".
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ScreenState {
+    pub timeout: u16,
+    pub interval: u16,
+    pub blanking: u8,
+    pub exposures: u8,
+    /// `None` si el servidor no tiene la extensión DPMS.
+    pub dpms: Option<Dpms>,
 }
 
-fn xset(args: &[&str]) -> color_eyre::Result<String> {
-    let out = Command::new("xset")
-        .args(args)
-        .output()
-        .wrap_err("no pude ejecutar `xset` · sudo dnf install xset")?;
-    if !out.status.success() {
-        bail!(
-            "xset {} falló: {}",
-            args.join(" "),
-            String::from_utf8_lossy(&out.stderr).trim()
-        );
-    }
-    Ok(String::from_utf8_lossy(&out.stdout).into_owned())
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Dpms {
+    pub enabled: bool,
+    pub standby: u16,
+    pub suspend: u16,
+    pub off: u16,
 }
 
-/// Busca la ÚLTIMA aparición: `xset q` repite claves (los LEDs del teclado
-/// incluyen `Suspend:`), y la sección DPMS/Screen Saver va al final.
-fn after<'a>(toks: &[&'a str], key: &str) -> Option<&'a str> {
-    toks.iter()
-        .rposition(|t| *t == key)
-        .and_then(|i| toks.get(i + 1))
-        .copied()
+fn connect() -> color_eyre::Result<RustConnection> {
+    let (conn, _) = x11rb::connect(None).wrap_err("no pude conectar con el servidor X11")?;
+    Ok(conn)
 }
 
-impl XsetState {
+fn has_dpms(conn: &RustConnection) -> bool {
+    conn.extension_information(x11rb::protocol::dpms::X11_EXTENSION_NAME)
+        .ok()
+        .flatten()
+        .is_some()
+        && conn
+            .dpms_capable()
+            .ok()
+            .and_then(|c| c.reply().ok())
+            .is_some_and(|r| r.capable)
+}
+
+/// X11 guarda los tiempos como INT16 en las peticiones y CARD16 en las respuestas.
+fn as_i16(v: u16) -> i16 {
+    i16::try_from(v).unwrap_or(i16::MAX)
+}
+
+impl ScreenState {
     pub fn read() -> color_eyre::Result<Self> {
-        Self::parse(&xset(&["q"])?)
-    }
-
-    fn parse(q: &str) -> color_eyre::Result<Self> {
-        let t: Vec<&str> = q.split_whitespace().collect();
-        // Si falta un campo preferimos fallar antes que "restaurar" valores inventados.
-        let num = |k: &str| -> color_eyre::Result<u32> {
-            after(&t, k)
-                .and_then(|v| v.parse().ok())
-                .ok_or_else(|| eyre!("no encontré {k:?} en la salida de `xset q`"))
+        let conn = connect()?;
+        let ss = conn.get_screen_saver()?.reply()?;
+        let dpms = if has_dpms(&conn) {
+            let t = conn.dpms_get_timeouts()?.reply()?;
+            let info = conn.dpms_info()?.reply()?;
+            Some(Dpms {
+                enabled: info.state,
+                standby: t.standby_timeout,
+                suspend: t.suspend_timeout,
+                off: t.off_timeout,
+            })
+        } else {
+            None
         };
         Ok(Self {
-            timeout: num("timeout:")?,
-            cycle: num("cycle:")?,
-            blank: after(&t, "blanking:") == Some("yes"),
-            dpms: q.contains("DPMS is Enabled"),
-            standby: num("Standby:")?,
-            suspend: num("Suspend:")?,
-            off: num("Off:")?,
+            timeout: ss.timeout,
+            interval: ss.interval,
+            blanking: ss.prefer_blanking.into(),
+            exposures: ss.allow_exposures.into(),
+            dpms,
         })
     }
 
+    /// Equivale a `xset s off s noblank -dpms`.
     pub fn disable(&self) -> color_eyre::Result<()> {
-        xset(&["s", "off"])?;
-        xset(&["s", "noblank"])?;
-        xset(&["-dpms"])?;
+        let conn = connect()?;
+        conn.set_screen_saver(
+            0,
+            as_i16(self.interval),
+            Blanking::NOT_PREFERRED,
+            Exposures::from(self.exposures),
+        )?
+        .check()?;
+        if self.dpms.is_some() {
+            conn.dpms_disable()?.check()?;
+        }
         Ok(())
     }
 
     pub fn restore(&self) -> color_eyre::Result<()> {
-        let (a, b) = (self.timeout.to_string(), self.cycle.to_string());
-        xset(&["s", &a, &b])?;
-        xset(&["s", if self.blank { "blank" } else { "noblank" }])?;
-        let (s, u, o) = (
-            self.standby.to_string(),
-            self.suspend.to_string(),
-            self.off.to_string(),
-        );
-        xset(&["dpms", &s, &u, &o])?;
-        xset(&[if self.dpms { "+dpms" } else { "-dpms" }])?;
+        let conn = connect()?;
+        conn.set_screen_saver(
+            as_i16(self.timeout),
+            as_i16(self.interval),
+            Blanking::from(self.blanking),
+            Exposures::from(self.exposures),
+        )?
+        .check()?;
+        if let Some(d) = &self.dpms {
+            conn.dpms_set_timeouts(d.standby, d.suspend, d.off)?
+                .check()?;
+            if d.enabled {
+                conn.dpms_enable()?.check()?;
+            } else {
+                conn.dpms_disable()?.check()?;
+            }
+        }
         Ok(())
     }
 }
@@ -92,11 +125,11 @@ fn state_path() -> PathBuf {
     let base = std::env::var_os("XDG_RUNTIME_DIR")
         .map(PathBuf::from)
         .unwrap_or_else(std::env::temp_dir);
-    base.join("nosleep").join("xset.json")
+    base.join("nosleep").join("screen.json")
 }
 
 pub struct ScreenGuard {
-    saved: XsetState,
+    saved: ScreenState,
     path: PathBuf,
 }
 
@@ -106,7 +139,7 @@ impl ScreenGuard {
             bail!("no hay $DISPLAY · esto es solo para X11");
         }
         if std::env::var("XDG_SESSION_TYPE").is_ok_and(|t| t == "wayland") {
-            bail!("--screen usa xset y solo funciona en sesiones X11, no en Wayland");
+            bail!("--screen solo funciona en sesiones X11, no en Wayland");
         }
         let path = state_path();
         if let Some(dir) = path.parent() {
@@ -128,7 +161,7 @@ impl ScreenGuard {
             Err(e) => return Err(e.into()),
         };
 
-        let saved = match XsetState::read() {
+        let saved = match ScreenState::read() {
             Ok(s) => s,
             Err(e) => {
                 let _ = fs::remove_file(&path);
@@ -160,7 +193,7 @@ pub fn restore_leftover() -> color_eyre::Result<bool> {
     if !p.exists() {
         return Ok(false);
     }
-    let saved: XsetState = serde_json::from_slice(&fs::read(&p)?)?;
+    let saved: ScreenState = serde_json::from_slice(&fs::read(&p)?)?;
     saved.restore()?;
     fs::remove_file(&p)?;
     Ok(true)
@@ -171,16 +204,26 @@ mod tests {
     use super::*;
 
     #[test]
-    fn parsea_xset_q_real() {
-        let st = XsetState::parse(include_str!("xset_q.fixture.txt")).unwrap();
-        assert_eq!((st.timeout, st.cycle), (1800, 1800));
-        assert_eq!((st.standby, st.suspend, st.off), (1800, 1800, 1800));
-        assert!(st.dpms);
-        assert!(!st.blank);
+    fn el_estado_sobrevive_al_json() {
+        let st = ScreenState {
+            timeout: 1800,
+            interval: 1800,
+            blanking: 0,
+            exposures: 1,
+            dpms: Some(Dpms {
+                enabled: true,
+                standby: 1800,
+                suspend: 1800,
+                off: 1800,
+            }),
+        };
+        let back: ScreenState = serde_json::from_slice(&serde_json::to_vec(&st).unwrap()).unwrap();
+        assert_eq!(st, back);
     }
 
     #[test]
-    fn falla_si_falta_un_campo() {
-        assert!(XsetState::parse("DPMS is Enabled").is_err());
+    fn tiempos_enormes_no_desbordan() {
+        assert_eq!(as_i16(40_000), i16::MAX);
+        assert_eq!(as_i16(600), 600);
     }
 }

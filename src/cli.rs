@@ -4,7 +4,8 @@ use clap::Parser;
 #[command(
     name = "nosleep",
     version,
-    about = "Impide la suspensión de tu laptop · systemd-logind + X11"
+    about = "Impide la suspensión de tu laptop · systemd-logind + X11",
+    after_help = "Sin argumentos abre la interfaz interactiva (TUI)."
 )]
 pub struct Cli {
     /// Duración: 10m, 8h, 1h30m, 90 (=90 min), inf
@@ -34,4 +35,8 @@ pub struct Cli {
     /// Listar los inhibidores activos del sistema
     #[arg(long)]
     pub list: bool,
+
+    /// Abrir la TUI usando -t, -s, --lid y --reason como valores iniciales
+    #[arg(long, conflicts_with_all = ["while_cmd", "restore", "list"])]
+    pub tui: bool,
 }
