@@ -1,6 +1,6 @@
 [package]
 name = "nosleep-tui"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 rust-version = "1.88"
 license = "MIT OR Apache-2.0"
@@ -31,3 +31,38 @@ thiserror = "2.0.21"
 x11rb = { version = "0.14", default-features = false, features = ["dpms"] }
 zbus = "6"
 # ⚠️ NADA de panic = "abort": los Drop DEBEN correr para restaurar xset
+
+# ── Paquetes .deb / .rpm (los genera el workflow de release) ─────────────────
+# El binario es estático (musl): no depende de ninguna librería del sistema.
+
+[package.metadata.deb]
+name = "nosleep-tui"
+maintainer = "AngheloBR <182365321+AngheloBR@users.noreply.github.com>"
+copyright = "2026, AngheloBR"
+section = "utils"
+priority = "optional"
+depends = "systemd | elogind"
+extended-description = """\
+TUI y CLI que impiden que la laptop se suspenda mediante un inhibidor de \
+systemd-logind. Opcionalmente mantiene la pantalla encendida (X11) e ignora \
+el cierre de la tapa, y restaura todo al terminar."""
+assets = [
+    ["target/release/nosleep", "usr/bin/", "755"],
+    ["README.md", "usr/share/doc/nosleep-tui/README.md", "644"],
+    ["LICENSE-MIT", "usr/share/doc/nosleep-tui/", "644"],
+    ["LICENSE-APACHE", "usr/share/doc/nosleep-tui/", "644"],
+]
+
+[package.metadata.generate-rpm]
+auto-req = "no"
+name = "nosleep-tui"
+summary = "Impide la suspensión de tu laptop · systemd-logind + X11"
+assets = [
+    { source = "target/release/nosleep", dest = "/usr/bin/nosleep", mode = "755" },
+    { source = "README.md", dest = "/usr/share/doc/nosleep-tui/README.md", mode = "644", doc = true },
+    { source = "LICENSE-MIT", dest = "/usr/share/licenses/nosleep-tui/LICENSE-MIT", mode = "644", doc = true },
+    { source = "LICENSE-APACHE", dest = "/usr/share/licenses/nosleep-tui/LICENSE-APACHE", mode = "644", doc = true },
+]
+
+[package.metadata.generate-rpm.recommends]
+systemd = "*"

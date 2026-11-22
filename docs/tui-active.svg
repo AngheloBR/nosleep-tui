@@ -11,7 +11,7 @@
 <text x="76.2" y="54.1" fill="#4ebbf2" font-weight="700" textLength="8.6" lengthAdjust="spacingAndGlyphs">e</text>
 <text x="84.8" y="54.1" fill="#38c7f0" font-weight="700" textLength="8.6" lengthAdjust="spacingAndGlyphs">e</text>
 <text x="93.4" y="54.1" fill="#22d3ee" font-weight="700" textLength="8.6" lengthAdjust="spacingAndGlyphs">p</text>
-<text x="102.0" y="54.1" fill="#334155" textLength="68.8" lengthAdjust="spacingAndGlyphs">  v0.1.1</text>
+<text x="102.0" y="54.1" fill="#334155" textLength="68.8" lengthAdjust="spacingAndGlyphs">  v0.1.2</text>
 <text x="325.6" y="54.1" fill="#34d399" textLength="180.6" lengthAdjust="spacingAndGlyphs">✓ bloqueo activo · 2h</text>
 <text x="592.2" y="54.1" fill="#34d399" textLength="17.2" lengthAdjust="spacingAndGlyphs">● </text>
 <text x="609.4" y="54.1" fill="#94a3b8" textLength="51.6" lengthAdjust="spacingAndGlyphs">logind</text>
@@ -111,7 +111,7 @@
 <rect x="437.4" y="154.0" width="9.0" height="19.4" fill="#65aff4"/>
 <text x="16.0" y="168.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="575.0" y="168.1" fill="#64748b" textLength="68.8" lengthAdjust="spacingAndGlyphs">vence   </text>
-<text x="643.8" y="168.1" fill="#e2e8f0" font-weight="700" textLength="43.0" lengthAdjust="spacingAndGlyphs">12:54</text>
+<text x="643.8" y="168.1" fill="#e2e8f0" font-weight="700" textLength="43.0" lengthAdjust="spacingAndGlyphs">13:02</text>
 <text x="798.6" y="168.1" fill="#65aff4" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <rect x="41.8" y="173.0" width="9.0" height="19.4" fill="#43c1f1"/>
 <rect x="50.4" y="173.0" width="9.0" height="19.4" fill="#43c1f1"/>
@@ -296,7 +296,7 @@
 <text x="59.0" y="472.1" fill="#72a8f5" font-weight="700" textLength="60.2" lengthAdjust="spacingAndGlyphs">nosleep</text>
 <text x="196.6" y="472.1" fill="#e2e8f0" textLength="240.8" lengthAdjust="spacingAndGlyphs">idle:sleep:handle-lid-switch</text>
 <text x="454.6" y="472.1" fill="#fbbf24" textLength="43.0" lengthAdjust="spacingAndGlyphs">block</text>
-<text x="514.8" y="472.1" fill="#64748b" textLength="51.6" lengthAdjust="spacingAndGlyphs">218978</text>
+<text x="514.8" y="472.1" fill="#64748b" textLength="51.6" lengthAdjust="spacingAndGlyphs">230791</text>
 <text x="592.2" y="472.1" fill="#e2e8f0" textLength="197.8" lengthAdjust="spacingAndGlyphs">Sesión de trabajo activ</text>
 <text x="798.6" y="472.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>
 <text x="16.0" y="491.1" fill="#334155" textLength="8.6" lengthAdjust="spacingAndGlyphs">│</text>

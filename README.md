@@ -40,6 +40,20 @@ curl -fsSL https://github.com/AngheloBR/nosleep-tui/releases/latest/download/nos
 On ARM (Raspberry Pi, ARM laptops) use `aarch64-unknown-linux-musl` instead.
 Every release also ships a `.sha256` checksum.
 
+### Fedora / RHEL / openSUSE (.rpm) · Debian / Ubuntu / Mint (.deb)
+
+Download the package for your system from the
+[latest release](https://github.com/AngheloBR/nosleep-tui/releases/latest) and install it
+with your package manager:
+
+```sh
+sudo dnf install ./nosleep-tui-*.x86_64.rpm     # Fedora, RHEL
+sudo apt install ./nosleep-tui_*_amd64.deb      # Debian, Ubuntu, Mint
+```
+
+The binary inside is static, so the same package works on old and new releases alike,
+Debian stable included. Uninstall with `sudo dnf remove nosleep-tui` / `sudo apt remove nosleep-tui`.
+
 ### From source
 
 Requires Rust 1.88+.

@@ -1,6 +1,7 @@
 name: Release
 
-# Publica binarios estáticos (musl) al empujar un tag `v*`, p. ej. `git tag v0.1.0 && git push --tags`.
+# Publica binarios estáticos (musl) y paquetes .deb/.rpm al empujar un tag `v*`,
+# p. ej. `git tag -a v0.1.2 -m "..." && git push origin v0.1.2`.
 on:
   push:
     tags: ["v*"]
@@ -31,10 +32,22 @@ jobs:
           cp target/${{ matrix.target }}/release/nosleep README.md README.es.md LICENSE-MIT LICENSE-APACHE "$name"/
           tar czf "$name.tar.gz" "$name"
           sha256sum "$name.tar.gz" > "$name.tar.gz.sha256"
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deb,cargo-generate-rpm
+      - name: Paquetes .deb y .rpm
+        run: |
+          # --no-strip: el perfil release ya quita los símbolos (y strip del host no sirve para aarch64).
+          cargo deb --no-build --no-strip --target ${{ matrix.target }} --output .
+          cargo generate-rpm --target ${{ matrix.target }} --output .
+          for f in *.deb *.rpm; do sha256sum "$f" > "$f.sha256"; done
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.target }}
-          path: nosleep-*.tar.gz*
+          path: |
+            nosleep-*.tar.gz*
+            *.deb*
+            *.rpm*
 
   release:
     needs: build
@@ -45,5 +58,8 @@ jobs:
           merge-multiple: true
       - uses: softprops/action-gh-release@v3
         with:
-          files: nosleep-*.tar.gz*
+          files: |
+            nosleep-*.tar.gz*
+            *.deb*
+            *.rpm*
           generate_release_notes: true
