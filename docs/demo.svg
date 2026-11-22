@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="510" height="190" viewBox="0 0 510 190">
+<style>text{font-family:"JetBrains Mono","Fira Code","DejaVu Sans Mono",Menlo,Consolas,monospace;font-size:14px;white-space:pre}</style>
+<rect width="510" height="190" rx="10" fill="#0d1117" stroke="#30363d"/>
+<rect width="510" height="34" rx="10" fill="#161b22"/><rect y="24" width="510" height="10" fill="#161b22"/>
+<circle cx="20" cy="17" r="6" fill="#ff5f57"/><circle cx="40" cy="17" r="6" fill="#febc2e"/><circle cx="60" cy="17" r="6" fill="#28c840"/>
+<text x="255.0" y="22" fill="#7d8590" text-anchor="middle" style="font-size:12px">nosleep — bloqueo de 1h30m</text>
+<text x="20.0" y="58" fill="#7ee787" textLength="16.8" lengthAdjust="spacingAndGlyphs">$ </text>
+<text x="36.8" y="58" fill="#e6edf3" textLength="260.4" lengthAdjust="spacingAndGlyphs">nosleep -t 1h30m --screen --lid</text>
+<text x="20.0" y="78" fill="#56d364" textLength="8.4" lengthAdjust="spacingAndGlyphs">◉</text>
+<text x="28.4" y="78" fill="#c9d1d9" textLength="151.2" lengthAdjust="spacingAndGlyphs"> bloqueo activo · </text>
+<text x="179.6" y="78" fill="#79c0ff" textLength="50.4" lengthAdjust="spacingAndGlyphs">1h 30m</text>
+<text x="230.0" y="78" fill="#c9d1d9" textLength="25.2" lengthAdjust="spacingAndGlyphs"> · </text>
+<text x="255.2" y="78" fill="#7d8590" textLength="235.2" lengthAdjust="spacingAndGlyphs">idle:sleep:handle-lid-switch</text>
+<text x="20.0" y="98" fill="#7d8590" textLength="92.4" lengthAdjust="spacingAndGlyphs">  restante </text>
+<text x="112.4" y="98" fill="#e3b341" textLength="67.2" lengthAdjust="spacingAndGlyphs">01:29:57</text>
+<text x="20.0" y="118" fill="#7d8590" textLength="16.8" lengthAdjust="spacingAndGlyphs">^C</text>
+<text x="20.0" y="138" fill="#56d364" textLength="8.4" lengthAdjust="spacingAndGlyphs">✓</text>
+<text x="28.4" y="138" fill="#c9d1d9" textLength="369.6" lengthAdjust="spacingAndGlyphs"> bloqueo liberado y configuración restaurada</text>
+<text x="20.0" y="158" fill="#7ee787" textLength="16.8" lengthAdjust="spacingAndGlyphs">$ </text>
+</svg>
