@@ -7,6 +7,10 @@
 A terminal app that holds a `systemd-logind` sleep lock for as long as you need, keeps the
 screen on and ignores the lid if you ask it to, and puts everything back when it's done.
 
+[![crates.io](https://img.shields.io/crates/v/nosleep-tui?logo=rust&color=a78bfa)](https://crates.io/crates/nosleep-tui)
+[![CI](https://github.com/AngheloBR/nosleep-tui/actions/workflows/ci.yml/badge.svg)](https://github.com/AngheloBR/nosleep-tui/actions/workflows/ci.yml)
+[![License: MIT OR Apache-2.0](https://img.shields.io/crates/l/nosleep-tui?color=22d3ee)](#license)
+
 [Español](README.es.md) · English
 
 ![nosleep TUI holding a 2-hour lock](docs/tui-active.svg)
@@ -54,9 +58,21 @@ sudo apt install ./nosleep-tui_*_amd64.deb      # Debian, Ubuntu, Mint
 The binary inside is static, so the same package works on old and new releases alike,
 Debian stable included. Uninstall with `sudo dnf remove nosleep-tui` / `sudo apt remove nosleep-tui`.
 
+### With Cargo (crates.io)
+
+If you already have Rust (1.88+):
+
+```sh
+cargo install nosleep-tui     # installs the `nosleep` command
+```
+
+Run the same command again to update, and `cargo uninstall nosleep-tui` to remove it.
+Cargo puts the binary in `~/.cargo/bin`; if your shell can't find `nosleep`, add that folder
+to your `PATH`.
+
 ### From source
 
-Requires Rust 1.88+.
+For the latest unreleased changes on `main`:
 
 ```sh
 cargo install --git https://github.com/AngheloBR/nosleep-tui

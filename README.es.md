@@ -8,6 +8,10 @@ Una app de terminal que mantiene un bloqueo de suspensión de `systemd-logind` e
 necesites, deja la pantalla encendida e ignora la tapa si se lo pides, y al terminar deja todo
 como estaba.
 
+[![crates.io](https://img.shields.io/crates/v/nosleep-tui?logo=rust&color=a78bfa)](https://crates.io/crates/nosleep-tui)
+[![CI](https://github.com/AngheloBR/nosleep-tui/actions/workflows/ci.yml/badge.svg)](https://github.com/AngheloBR/nosleep-tui/actions/workflows/ci.yml)
+[![License: MIT OR Apache-2.0](https://img.shields.io/crates/l/nosleep-tui?color=22d3ee)](#licencia)
+
 Español · [English](README.md)
 
 ![TUI de nosleep con un bloqueo de 2 horas](docs/tui-active.svg)
@@ -57,9 +61,21 @@ El binario de dentro es estático, así que el mismo paquete funciona en version
 nuevas, incluido Debian estable. Para desinstalar: `sudo dnf remove nosleep-tui` /
 `sudo apt remove nosleep-tui`.
 
+### Con Cargo (crates.io)
+
+Si ya tienes Rust (1.88+):
+
+```sh
+cargo install nosleep-tui     # instala el comando `nosleep`
+```
+
+Para actualizar, repite el mismo comando; para desinstalar, `cargo uninstall nosleep-tui`.
+Cargo deja el binario en `~/.cargo/bin`; si la terminal no encuentra `nosleep`, agrega esa
+carpeta a tu `PATH`.
+
 ### Desde el código
 
-Necesitas Rust 1.88+.
+Para tener los últimos cambios de `main` aún sin publicar:
 
 ```sh
 cargo install --git https://github.com/AngheloBR/nosleep-tui
