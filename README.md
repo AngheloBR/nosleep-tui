@@ -7,9 +7,9 @@
 A terminal app that holds a `systemd-logind` sleep lock for as long as you need, keeps the
 screen on and ignores the lid if you ask it to, and puts everything back when it's done.
 
-[![crates.io](https://img.shields.io/crates/v/nosleep-tui?logo=rust&color=a78bfa)](https://crates.io/crates/nosleep-tui)
+[![crates.io](https://img.shields.io/crates/v/nosleep-tui?logo=rust&color=a78bfa&label=crates.io)](https://crates.io/crates/nosleep-tui)
 [![CI](https://github.com/AngheloBR/nosleep-tui/actions/workflows/ci.yml/badge.svg)](https://github.com/AngheloBR/nosleep-tui/actions/workflows/ci.yml)
-[![License: MIT OR Apache-2.0](https://img.shields.io/crates/l/nosleep-tui?color=22d3ee)](#license)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-22d3ee)](#license)
 
 [Español](README.es.md) · English
 

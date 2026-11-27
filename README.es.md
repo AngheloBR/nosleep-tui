@@ -8,9 +8,9 @@ Una app de terminal que mantiene un bloqueo de suspensión de `systemd-logind` e
 necesites, deja la pantalla encendida e ignora la tapa si se lo pides, y al terminar deja todo
 como estaba.
 
-[![crates.io](https://img.shields.io/crates/v/nosleep-tui?logo=rust&color=a78bfa)](https://crates.io/crates/nosleep-tui)
+[![crates.io](https://img.shields.io/crates/v/nosleep-tui?logo=rust&color=a78bfa&label=crates.io)](https://crates.io/crates/nosleep-tui)
 [![CI](https://github.com/AngheloBR/nosleep-tui/actions/workflows/ci.yml/badge.svg)](https://github.com/AngheloBR/nosleep-tui/actions/workflows/ci.yml)
-[![License: MIT OR Apache-2.0](https://img.shields.io/crates/l/nosleep-tui?color=22d3ee)](#licencia)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-22d3ee)](#licencia)
 
 Español · [English](README.md)
 
